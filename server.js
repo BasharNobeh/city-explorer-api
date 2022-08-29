@@ -1,68 +1,52 @@
-'use strict';
-
-require('dotenv').config();
-const express = require('express'); //import express
-const cors = require('cors'); //import cors
-const WeatherData = require('./Assets/weather.json');
-
+require("dotenv").config();
+const express = require("express");
+const cors = require("cors");
 const server = express();
-server.use(cors()); // make my server opened for any client
 
-const PORT = process.env.MY_PORT ; //take the port from .env file
+server.use(cors());
 
-// http://localhost:3100/
-server.get('/',(req,res)=>{
-    res.send('This is The defulat route . Happy to have you here :)')
-})
+const PORT = process.env.PORT;
 
-// http://localhost:3100/weather?name=cityName&lon=cityLon&lat=cityLat
-server.get('/weather',(req,res) => {
+const Forcast = require("./forcast");
 
+//http:localhost:3100/
+server.get("/", (req, res) => {
+  res.send("Hi from the Default route");
+});
 
-try{
-    const result = WeatherData.find( (item) =>{
-       
-        
-        if(item.city_name === req.query.name)
-        return item;
-    })  
-    let arr = [];
-    arr.push(result.city_name);
-    arr.push(result.lat )
-    arr.push(result.lon)
-    console.log("array",arr);
+//http:localhost:3100/weather?name=cityName&lon=lon&lat=lat
+server.get("/weather", (req, res) => {
+  if (
+    req.query.lat === Forcast.ammancoordinates[0] &&
+    req.query.lon === Forcast.ammancoordinates[1] &&
+    req.query.name.toLowerCase() === "amman"
+  ) {
+    return res.send(Forcast.amman);
+  } else if (
+    req.query.lat === Forcast.parisCoordinates[0] &&
+    req.query.lon === Forcast.parisCoordinates[1] &&
+    req.query.name.toLowerCase() === "paris"
+  ) {
+    return res.send(Forcast.paris);
+  } else if (
+    req.query.lat === Forcast.seattleCoordinates[0] &&
+    req.query.lon === Forcast.seattleCoordinates[1] &&
+    req.query.name.toLowerCase() === "seattle"
+  ) {
+    return res.send(Forcast.seattle);
+  } else {
+    return res.send(
+      "404 Error, Please Enter Amman, Paris or Seattle to get weather info!"
+    );
+  }
+});
 
-    res.send(arr);
-    this.setState({
-          
-        name: CityData[0].display_name,
-        lat: CityData[1].lat,
-        lon: CityData[2].lon,
-        appear:true,
-        
-      });
+server.get("*", (req, res) => {
+  res.send(
+    "ERROR ! Please Enter A valid route . We could not find this page ! "
+  );
+});
 
-
-}catch{
-
-    res.send("Error ! Please Enter One Of the following :Amman,Seattle or Paris. ");
-
-
-}
-
-})
-
-
-
-// http://localhost:3100/getPock?name=bulbasaur
-
-
-// http:localhost:3100/***** */
-server.get('*',(req,res)=>{
-    res.status(404).send('Sorry, page not found');
-})
-
-// to make our server listen on PORT
 server.listen(PORT, () => {
-    console.log(`Hello, I am listening on ${PORT}`);
-})
+  console.log(`Hello, I am listening On ${PORT}`);
+});
