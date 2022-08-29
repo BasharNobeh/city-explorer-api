@@ -47,6 +47,15 @@ Start time: _6:30____
 Finish time: 2:00 am_____
 
 Actual time needed to complete: _8:30____
+Name of feature: ___Making everthing visible for the user and deploying the client website  ____________________________
+
+Estimate of time needed to complete: __1:00___
+
+Start time: _2:00 am____
+
+Finish time: 3:00 am_____
+
+Actual time needed to complete: _1:00____
 
 ## Credit and Collaborations
 
